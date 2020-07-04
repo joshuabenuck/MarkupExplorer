@@ -31,29 +31,21 @@ impl MarkupExplorer {
         for char in line.chars() {
             if char == '\\' {
                 escaped = true;
-                continue;
-            }
-            if escaped {
-                next.push(char);
+            } else if escaped {
                 escaped = false;
-                continue;
-            }
-            if quoted && char == '"' {
+                next.push(char);
+            } else if quoted && char == '"' {
                 quoted = false;
                 args.push(next);
                 next = String::new();
-                continue;
-            }
-            if char == '"' {
+            } else if char == '"' {
                 quoted = true;
-                continue;
-            }
-            if !quoted && char == ' ' {
+            } else if !quoted && char == ' ' {
                 args.push(next);
                 next = String::new();
-                continue;
+            } else {
+                next.push(char);
             }
-            next.push(char);
         }
         if next.len() > 0 {
             args.push(next);
